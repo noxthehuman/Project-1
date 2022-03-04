@@ -1,0 +1,10 @@
+.align-elements {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+canvas {
+    /*background-color: rgb(206, 191, 191);*/
+    border: 5px solid red;
+}
