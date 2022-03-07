@@ -9,7 +9,7 @@ canvas {
     border: 3px solid grey;
 }
 
-#timer {
-    z-index: 100;
+.start-btn {
+    width: 100px;
 }
 
