@@ -66,26 +66,28 @@ context.fillRect(170, 280, 350, 100)
 context.clearRect(180, 290, 330, 80)
 
 //Rivets
+//top left
 context.beginPath()
 context.arc(85, 160, 10, 0, Math.PI*2)
 context.fillStyle = 'black'
 context.fill()
 context.closePath()
-
+//bottom left
 context.beginPath()
 context.arc(85, 500, 10, 0, Math.PI*2)
 context.fillStyle = 'black'
 context.fill()
 context.closePath()
-
+//top right
 context.beginPath()
 context.arc(600, 160, 10, 0, Math.PI*2)
 context.fillStyle = 'black'
 context.fill()
 context.closePath()
-
+// bottom right
 context.beginPath()
 context.arc(600, 500, 10, 0, Math.PI*2)
 context.fillStyle = 'black'
 context.fill()
 context.closePath()
+
