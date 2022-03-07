@@ -63,7 +63,8 @@ context.fillRect(70, 140, 550, 380)
 
 context.fillStyle = 'black'
 context.fillRect(170, 280, 350, 100)
-context.clearRect(180, 290, 330, 80)
+context.fillStyle = 'white'
+context.fillRect(180, 290, 330, 80)
 
 //Rivets
 //top left
@@ -90,4 +91,28 @@ context.arc(600, 500, 10, 0, Math.PI*2)
 context.fillStyle = 'black'
 context.fill()
 context.closePath()
+
+//Timer text
+
+function startTimer() {
+    let sec = 10
+    setInterval(function () {
+        context.clearRect(180, 290, 330, 80)
+        context.fillStyle = 'red'
+        context.font = '60px Arial'
+        context.fillText('00:' + sec.toString().padStart(2, '0'), 280, 350, 500)
+        sec--
+        
+        if (sec <= 0) {
+            sec = 0
+        }
+        
+    }, 1000)
+}
+
+
+window.onload = function () {
+    startTimer()
+}
+
 
