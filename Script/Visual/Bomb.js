@@ -95,27 +95,28 @@ function getMousePosition( canvas, evt ) {
 }
 
 function WinCondition() {
-    clearInterval(sec)
+    clearInterval(intervalId)
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.fillStyle = 'green'
     context.fillRect(0, 0, canvas.width, canvas.height)
 }
 
 function loseCondition() {
-    clearInterval(sec)
+    clearInterval(intervalId)
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.fillStyle = 'red'
     context.fillRect(0, 0, canvas.width, canvas.height)
 }
 
 function penaltyTime() {
-    sec -= sec/4
+    sec -= Math.round(sec/4)
 }
 
 //Timer text
 let sec = 30
+let intervalId
 function startTimer() {
-    setInterval(function () {
+    intervalId = setInterval(function () {
         context.clearRect(180, 290, 330, 80)
         context.fillStyle = 'red'
         context.font = '60px Arial'
