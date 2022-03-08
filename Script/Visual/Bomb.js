@@ -24,6 +24,11 @@ class Wires {
         context.stroke()
         context.closePath()
     }
+
+    isMouseInWire(mouseX, mouseY) {
+        let distance = ((mouseY - this.y2)**2 + (mouseX -this.x2)**2)** (1/2)
+        let isIn = this.radius - (this.strokeWidth/2)
+    }
 }
 
 const wires = [
@@ -35,18 +40,18 @@ const wires = [
     new Wires(500, 500, 400, 500, 120, Math.PI*2, Math.PI, 15, 'pink', 0)
 ]
     
-for (i=0; i < 3; i++) {
-    let randomId = Math.floor(Math.random() * 3)
+for (i=1; i < 4; i++) {
     let randomIndex = Math.floor(Math.random() * wires.length)   
     
-    if(wires[randomIndex].id !== randomId) {
-        wires[randomIndex].id = randomId
+    if(wires[randomIndex].id !== i) {
+        wires[randomIndex].id = i
     }
 }
 
 function drawWires(i, newColor) {
     for (i=0; i < wires.length; i++) {
         wires[i].draw(newColor)
+        console.log(wires[i].color, wires[i].id)
     }
 }
 
@@ -113,7 +118,7 @@ function penaltyTime() {
 }
 
 //Timer text
-let sec = 30
+let sec = 120
 let intervalId
 function startTimer() {
     intervalId = setInterval(function () {
@@ -130,14 +135,20 @@ function startTimer() {
 }
 
 document.querySelector('.start-btn').addEventListener('click', function() {
+    document.querySelector('.start-btn').innerHTML = "Reload"
     startTimer()
     drawWires()
     drawBomb()
+    if(sec < 30) {
+        window.location.href = window.location.href;
+    }
+
     canvas.addEventListener('click', function( evt) {
         let mousePos = getMousePosition( canvas, evt );
         
         for (i=0; i < wires.length; i++) {
-            if(mousePos.x < wires[i].x2 && mousePos.y < wires[i].y2) {
+            if(wires[i].isMouseInWire(mousePos.x, mousePos.y <= wires[i].radius - (wires[i].strokeWidth/2)) && 
+            wires[i].isMouseInWire(mousePos.x, mousePos.y) >= wires[i].radius - (wires[i].strokeWidth/2)){
                 if(wires[i].id === 1) {
                     WinCondition()
                 }
@@ -147,16 +158,14 @@ document.querySelector('.start-btn').addEventListener('click', function() {
                 if(wires[i].id === 3) {
                     penaltyTime()
                 }
+            } 
+            else {
+                continue
             }
         }
     })
 
-    if(sec < 30) {
-        document.querySelector('.start-btn p').innerHTML = 'Reload'
-        window.location.href = window.location.href;
-    }
 })
-
 
 canvas.addEventListener( 'mouseenter', function( evt ) {
     let mousePos = getMousePosition( canvas, evt );
