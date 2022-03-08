@@ -52,38 +52,38 @@ function drawWires(i, newColor) {
 
 function drawBomb() {
     context.fillStyle = 'grey'
-context.fillRect(70, 140, 550, 380)
+    context.fillRect(70, 140, 550, 380)
 
-context.fillStyle = 'black'
-context.fillRect(170, 280, 350, 100)
-context.fillStyle = 'white'
-context.fillRect(180, 290, 330, 80)
+    context.fillStyle = 'black'
+    context.fillRect(170, 280, 350, 100)
+    context.fillStyle = 'white'
+    context.fillRect(180, 290, 330, 80)
 
-//Rivets
-//top left
-context.beginPath()
-context.arc(85, 160, 10, 0, Math.PI*2)
-context.fillStyle = 'black'
-context.fill()
-context.closePath()
-//bottom left
-context.beginPath()
-context.arc(85, 500, 10, 0, Math.PI*2)
-context.fillStyle = 'black'
-context.fill()
-context.closePath()
-//top right
-context.beginPath()
-context.arc(600, 160, 10, 0, Math.PI*2)
-context.fillStyle = 'black'
-context.fill()
-context.closePath()
-// bottom right
-context.beginPath()
-context.arc(600, 500, 10, 0, Math.PI*2)
-context.fillStyle = 'black'
-context.fill()
-context.closePath()
+    //Rivets
+    //top left
+    context.beginPath()
+    context.arc(85, 160, 10, 0, Math.PI*2)
+    context.fillStyle = 'black'
+    context.fill()
+    context.closePath()
+    //bottom left
+    context.beginPath()
+    context.arc(85, 500, 10, 0, Math.PI*2)
+    context.fillStyle = 'black'
+    context.fill()
+    context.closePath()
+    //top right
+    context.beginPath()
+    context.arc(600, 160, 10, 0, Math.PI*2)
+    context.fillStyle = 'black'
+    context.fill()
+    context.closePath()
+    // bottom right
+    context.beginPath()
+    context.arc(600, 500, 10, 0, Math.PI*2)
+    context.fillStyle = 'black'
+    context.fill()
+    context.closePath()
 }
 
 function getMousePosition( canvas, evt ) {
@@ -109,7 +109,7 @@ function loseCondition() {
 }
 
 function penaltyTime() {
-    sec -= Math.round(sec/4)
+    sec = Math.round(sec * 0.75)
 }
 
 //Timer text
@@ -124,9 +124,8 @@ function startTimer() {
         sec--
         
         if (sec <= 0) {
-            sec = 0
+            loseCondition()
         }
-        
     }, 1000)
 }
 
@@ -151,6 +150,11 @@ document.querySelector('.start-btn').addEventListener('click', function() {
             }
         }
     })
+
+    if(sec < 30) {
+        document.querySelector('.start-btn p').innerHTML = 'Reload'
+        window.location.href = window.location.href;
+    }
 })
 
 
