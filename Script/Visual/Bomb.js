@@ -11,6 +11,7 @@ let mouseY = 0
 let start = 0
 let end = 0
 let seconds = 0
+let updateId 
 
 canvas.addEventListener("mousemove", setMousePosition, false);
  
@@ -38,9 +39,9 @@ function update() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawWires()
     drawBomb()
-    DisplayTime()
+    displayTime()
     context.drawImage(img,mouseX - 60, mouseY, 120, 200)
-    requestAnimationFrame(update)
+    updateId = requestAnimationFrame(update)
 }
 
 class Wires {
@@ -133,21 +134,23 @@ function drawBomb() {
     context.closePath()
 }
 
-function getMousePosition( canvas, evt ) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x: Math.floor( ( evt.clientX - rect.left ) / ( rect.right - rect.left ) * canvas.width ),
-        y: Math.floor( ( evt.clientY - rect.top ) / ( rect.bottom - rect.top ) * canvas.height )
-    };
-}
+// function getMousePosition( canvas, evt ) {
+//     const rect = canvas.getBoundingClientRect();
+//     return {
+//         x: Math.floor( ( evt.clientX - rect.left ) / ( rect.right - rect.left ) * canvas.width ),
+//         y: Math.floor( ( evt.clientY - rect.top ) / ( rect.bottom - rect.top ) * canvas.height )
+//     };
+// }
 
-function WinCondition() {
+function winCondition() {
+    cancelAnimationFrame(updateId)
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.fillStyle = 'green'
     context.fillRect(0, 0, canvas.width, canvas.height)
 }
 
 function loseCondition() {
+    cancelAnimationFrame(updateId)
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.fillStyle = 'red'
     context.fillRect(0, 0, canvas.width, canvas.height)
@@ -166,7 +169,7 @@ function calculateSeconds() {
     seconds = Math.round((end - start)/1000)
 }
 
-function DisplayTime() {
+function displayTime() {
         calculateSeconds()
         context.clearRect(180, 290, 330, 80)
         context.fillStyle = 'red'
@@ -187,19 +190,22 @@ document.querySelector('.start-btn').addEventListener('click', function() {
     }
     update()
     canvas.addEventListener('click', function( evt) {
-        let mousePos = getMousePosition( canvas, evt );
-        
+        //let mousePos = getMousePosition( canvas, evt );
+        console.log('click')
         for (i=0; i < wires.length; i++) {
-            if(wires[i].isMouseInWire(mousePos.x, mousePos.y) <= wires[i].radius + (wires[i].strokeWidth/2) && 
-            wires[i].isMouseInWire(mousePos.x, mousePos.y) >= wires[i].radius - (wires[i].strokeWidth/2))
+            if(wires[i].isMouseInWire(mouseX, mouseY) <= wires[i].radius + (wires[i].strokeWidth/2) && 
+            wires[i].isMouseInWire(mouseX, mouseY) >= wires[i].radius - (wires[i].strokeWidth/2))
             {
                 if(wires[i].id === 1) {
-                    WinCondition()
+                    console.log('win')
+                    winCondition()
                 }
                 if(wires[i].id === 2) {
+                    console.log('lose')
                     loseCondition()
                 }
                 if(wires[i].id === 3) {
+                    console.log('less time')
                     penaltyTime()
                 }
             } 
@@ -207,18 +213,3 @@ document.querySelector('.start-btn').addEventListener('click', function() {
     })
 })
 
-canvas.addEventListener( 'mouseover', function( evt ) {
-    let mousePos = getMousePosition( canvas, evt );
-     
-    for (i=0; i < wires.length; i++) {
-        if(wires[i].isMouseInWire(mousePos.x, mousePos.y) <= wires[i].radius + (wires[i].strokeWidth/2) && 
-        wires[i].isMouseInWire(mousePos.x, mousePos.y) >= wires[i].radius - (wires[i].strokeWidth/2))
-        {
-            context.clearRect(0, 0, canvas.width, canvas.height)
-            drawWires(i,'yellow').strokeWidth *= 1.25
-            drawWires()
-            drawBomb()
-        }
-    
-    }
-})
