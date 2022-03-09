@@ -120,7 +120,7 @@ function penaltyTime() {
 }
 
 //Timer text
-let sec = 120
+let sec = 30
 let intervalId
 function startTimer() {
     intervalId = setInterval(function () {
@@ -138,13 +138,14 @@ function startTimer() {
 
 document.querySelector('.start-btn').addEventListener('click', function() {
     document.querySelector('.start-btn').innerHTML = "Reload"
-    startTimer()
-    drawWires()
-    drawBomb()
     if(sec < 30) {
         window.location.href = window.location.href;
     }
-
+   
+    startTimer()
+    drawWires()
+    drawBomb()
+   
     canvas.addEventListener('click', function( evt) {
         let mousePos = getMousePosition( canvas, evt );
         
