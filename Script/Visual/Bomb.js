@@ -35,15 +35,6 @@ function getPosition(el) {
     };
 }
 
-function update() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    drawWires()
-    drawBomb()
-    displayTime()
-    context.drawImage(img,mouseX - 25, mouseY - 90, 200, 200)
-    updateId = requestAnimationFrame(update)
-}
-
 class Wires {
     constructor(x1, y1, x2, y2, radius, startAngle, endAngle, strokeWidth, color, id, isHovering, isCut) {
         this.x1 = x1
@@ -56,7 +47,7 @@ class Wires {
         this.strokeWidth = strokeWidth
         this.color = color
         this.id = id
-        this.isHovering = true
+        this.isHovering = false
         this.isCut = false
     }   
 
@@ -77,7 +68,15 @@ class Wires {
 
     isMouseInWire(mouseX, mouseY) {
         let distance = ((mouseY - this.y2)**2 + (mouseX -this.x2)**2)** (1/2)
-        return distance
+        let thickness1 = this.radius + (this.strokeWidth/2)
+        let thickness2 = this.radius - (this.strokeWidth/2)
+        if (distance <= thickness1 && distance >= thickness2) {
+            return true
+        }
+        else {
+            return false
+        }
+
     }
 }
 
@@ -98,15 +97,27 @@ for (i=1; i < 3; i++) {
     }
 }
 
-function isHoveringOverWire() {
-    
+function isMouseOverWire() {
+    for (i=0; i < wires.length; i++) {
+        if(wires[i].isMouseInWire(mouseX, mouseY)) {
+            
+            wires[i].isHovering = true
+        }
+        else {
+            wires[i].isHovering = false
+        }
+        
+    }
 }
 
-function drawWires(i, newColor) {
+function drawWires() {
+    isMouseOverWire()
     for (i=0; i < wires.length; i++) {
-
         if(wires[i].isCut) {
             wires[i].draw('grey')
+        }
+        else if(wires[i].isHovering) {
+            wires[i].draw('yellow')
         }
         else {
             wires[i].draw(wires[i].color)
@@ -114,17 +125,6 @@ function drawWires(i, newColor) {
     }
 }
 
-for (i=0; i < wires.length; i++) {
-    if(wires[i].isMouseInWire(mouseX, mouseY) <= wires[i].radius + (wires[i].strokeWidth/2) && 
-    wires[i].isMouseInWire(mouseX, mouseY) >= wires[i].radius - (wires[i].strokeWidth/2)) {
-        if(!wires[i].isHovering) {
-            wires[i].isHovering = true
-        }
-        else{
-            wires[i].isHovering = false
-        }
-    }
-}
 
 function drawBomb() {
     context.fillStyle = 'grey'
@@ -176,11 +176,10 @@ function loseCondition() {
     context.fillRect(0, 0, canvas.width, canvas.height)
 }
 
-function penaltyTime() {
-    const diff = 5
-    let penalty = new Date(start.getTime() + diff * 1000)
-    seconds += penalty
-}
+// function penaltyTime() {
+//     let penalty = new Date()
+//     seconds += Math.round((penality - start)/1000) * 0.5
+// }
 
 function StartTimer() {
     start = new Date()
@@ -205,6 +204,15 @@ function displayTime() {
     
 }
 
+function update() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawWires()
+    drawBomb()
+    displayTime()
+    context.drawImage(img,mouseX - 25, mouseY - 90, 200, 200)
+    updateId = requestAnimationFrame(update)
+}
+
 document.querySelector('.start-btn').addEventListener('click', function() {
     document.querySelector('.start-btn').innerHTML = "Retry"
     StartTimer()
@@ -218,8 +226,8 @@ document.querySelector('.start-btn').addEventListener('click', function() {
             if(wires[i].isMouseInWire(mouseX, mouseY) <= wires[i].radius + (wires[i].strokeWidth/2) && 
             wires[i].isMouseInWire(mouseX, mouseY) >= wires[i].radius - (wires[i].strokeWidth/2))
             {
-                wires[i].isHovering = true
                 wires[i].isCut = true
+                wires[i].isHovering = false
                 if(wires[i].id === 1) {
                     winCondition()
                 }
