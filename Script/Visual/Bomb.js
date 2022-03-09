@@ -88,12 +88,14 @@ const wires = [
     new Wires(500, 500, 400, 500, 120, Math.PI*2, Math.PI, 15, 'pink', 0),
     new Wires(300, 500, 200, 500, 95, Math.PI*2, Math.PI, 20, 'purple', 0)
 ]
-    
-for (i=1; i < 3; i++) {
-    let randomIndex = Math.floor(Math.random() * wires.length)   
-    
-    if(wires[randomIndex].id !== i) {
-        wires[randomIndex].id = i
+
+function assignId() {
+    for (i=1; i < 3; i++) {
+        let randomIndex = Math.floor(Math.random() * wires.length)   
+        
+        if(wires[randomIndex].id !== i) {
+            wires[randomIndex].id = i
+        }
     }
 }
 
@@ -111,6 +113,7 @@ function isMouseOverWire() {
 }
 
 function drawWires() {
+    assignId()
     isMouseOverWire()
     for (i=0; i < wires.length; i++) {
         if(wires[i].isCut) {
@@ -213,14 +216,10 @@ function update() {
 }
 
 document.querySelector('.start-btn').addEventListener('click', function() {
-    document.querySelector('.start-btn').innerHTML = "Retry"
     StartTimer()
-    // if(seconds > 0) {
-    //     window.location.href = window.location.href;
-    // }
     update()
     
-    canvas.addEventListener('click', function( evt) {
+    canvas.addEventListener('click', function() {
         for (i=0; i < wires.length; i++) {
             if(wires[i].isMouseInWire(mouseX, mouseY)) 
             {
@@ -234,7 +233,6 @@ document.querySelector('.start-btn').addEventListener('click', function() {
                 }
                 if(wires[i].id === 0) {
                     penaltyTime()
-                    console.log(penalty)
                 }
             } 
             else {
@@ -243,4 +241,3 @@ document.querySelector('.start-btn').addEventListener('click', function() {
         }
     })
 })
-
