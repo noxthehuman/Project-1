@@ -27,9 +27,11 @@ class Wires {
 
     isMouseInWire(mouseX, mouseY) {
         let distance = ((mouseY - this.y2)**2 + (mouseX -this.x2)**2)** (1/2)
-        let isIn = this.radius - (this.strokeWidth/2)
+        return distance
     }
 }
+
+console.log(4**(1/2))
 
 const wires = [
     new Wires(100, 150, 240, 150, 130, Math.PI, Math.PI*2, 18, 'orange', 0),
@@ -147,8 +149,9 @@ document.querySelector('.start-btn').addEventListener('click', function() {
         let mousePos = getMousePosition( canvas, evt );
         
         for (i=0; i < wires.length; i++) {
-            if(wires[i].isMouseInWire(mousePos.x, mousePos.y <= wires[i].radius - (wires[i].strokeWidth/2)) && 
+            if(wires[i].isMouseInWire(mousePos.x, mousePos.y) <= wires[i].radius + (wires[i].strokeWidth/2) && 
             wires[i].isMouseInWire(mousePos.x, mousePos.y) >= wires[i].radius - (wires[i].strokeWidth/2)){
+                console.log(wires[i].color)
                 if(wires[i].id === 1) {
                     WinCondition()
                 }
@@ -159,9 +162,7 @@ document.querySelector('.start-btn').addEventListener('click', function() {
                     penaltyTime()
                 }
             } 
-            else {
-                continue
-            }
+           
         }
     })
 
