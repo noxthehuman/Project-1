@@ -10,7 +10,7 @@ let mouseY = 0
 
 let start = 0
 let end = 0
-let seconds = 0
+let penalty = 0
 let updateId 
 
 canvas.addEventListener("mousemove", setMousePosition, false);
@@ -176,10 +176,9 @@ function loseCondition() {
     context.fillRect(0, 0, canvas.width, canvas.height)
 }
 
-// function penaltyTime() {
-//     let penalty = new Date()
-//     seconds += Math.round((penality - start)/1000) * 0.5
-// }
+function penaltyTime() {
+    penalty += 2
+}
 
 function StartTimer() {
     start = new Date()
@@ -187,18 +186,18 @@ function StartTimer() {
 
 function calculateSeconds() {
     end = new Date()
-    seconds = Math.round((end - start)/1000)
-    return seconds
+    const seconds = Math.round((end - start)/1000)
+    return seconds + penalty
 }
 
 function displayTime() {
-        calculateSeconds()
+        const seconds = 30 - calculateSeconds()
         context.clearRect(180, 290, 330, 80)
         context.fillStyle = 'red'
         context.font = '60px Arial'
         context.fillText('00:' + seconds.toString().padStart(2, '0'), 280, 350, 500)
         
-        if (seconds >= 30) {
+        if (seconds <= 0) {
             loseCondition()
         }
     
@@ -216,15 +215,14 @@ function update() {
 document.querySelector('.start-btn').addEventListener('click', function() {
     document.querySelector('.start-btn').innerHTML = "Retry"
     StartTimer()
-    if(seconds > 0) {
-        window.location.href = window.location.href;
-    }
+    // if(seconds > 0) {
+    //     window.location.href = window.location.href;
+    // }
     update()
     
     canvas.addEventListener('click', function( evt) {
         for (i=0; i < wires.length; i++) {
-            if(wires[i].isMouseInWire(mouseX, mouseY) <= wires[i].radius + (wires[i].strokeWidth/2) && 
-            wires[i].isMouseInWire(mouseX, mouseY) >= wires[i].radius - (wires[i].strokeWidth/2))
+            if(wires[i].isMouseInWire(mouseX, mouseY)) 
             {
                 wires[i].isCut = true
                 wires[i].isHovering = false
@@ -236,6 +234,7 @@ document.querySelector('.start-btn').addEventListener('click', function() {
                 }
                 if(wires[i].id === 0) {
                     penaltyTime()
+                    console.log(penalty)
                 }
             } 
             else {
