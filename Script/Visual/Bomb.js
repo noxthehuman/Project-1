@@ -4,6 +4,11 @@ const retry = document.querySelector('.start-btn')
 
 const img = new Image()
 img.src='./Images/wire-cutter.png'
+const bg = new Image()
+bg.src='./Images/explosion.png'
+
+const bip = new Audio(src='bip.mp3')
+const exp = new Audio(src='explosion.mp3')
 
 const canvasPos = getPosition(canvas)
 let mouseX = 0
@@ -13,6 +18,7 @@ let start = 0
 let end = 0
 let penalty = 0
 let updateId 
+let sound
 
 canvas.addEventListener("mousemove", setMousePosition, false);
 
@@ -83,7 +89,7 @@ class Wires {
 }
 
 const wires = [
-    new Wires(395, 150, 400, 150, 120, Math.PI, Math.PI*2, 25, 'black', 0),
+    new Wires(395, 150, 400, 150, 120, Math.PI, Math.PI*2, 25, 'pink', 0),
     new Wires(200, 150, 340, 150, 130, Math.PI, Math.PI*2, 18, 'orange', 0),
     new Wires(350, 150, 550, 150, 100, Math.PI, Math.PI*2, 18, 'blue', 0),
     new Wires(700, 300, 700, 400, 100, (Math.PI*3)/2, Math.PI/2, 13, 'green', 0),
@@ -95,7 +101,7 @@ const wires = [
     new Wires(400, 500, 300, 500, 95, Math.PI*2, Math.PI, 20, 'purple', 0),
     new Wires(200, 450, 200, 270, 120, Math.PI/2, (Math.PI*3)/2, 17, 'blue', 0),
     new Wires(200, 500, 200, 350, 80, Math.PI/2, (Math.PI*3)/2, 12, 'green', 0),
-    new Wires(200, 510, 200, 350, 130, Math.PI/2, (Math.PI*3)/2, 14, 'black', 0)
+    new Wires(200, 510, 200, 350, 130, Math.PI/2, (Math.PI*3)/2, 14, 'brown', 0)
 ]
 
 function setId() {
@@ -175,16 +181,18 @@ function drawBomb() {
 
 function winCondition() {
     cancelAnimationFrame(updateId)
-    context.clearRect(0, 0, canvas.width, canvas.height)
+    clearInterval(sound)
+    context.clearRect(280, 290, 330, 80)
     context.fillStyle = 'green'
-    context.fillRect(0, 0, canvas.width, canvas.height)
+    context.font = '65px Iceland'
+    context.fillText('Diffused', 350, 350, 500)
 }
 
 function loseCondition() {
     cancelAnimationFrame(updateId)
+    exp.play()
     context.clearRect(0, 0, canvas.width, canvas.height)
-    context.fillStyle = 'red'
-    context.fillRect(0, 0, canvas.width, canvas.height)
+    context.drawImage(bg, 0, 0, canvas.width, canvas.height)
 }
 
 function penaltyTime() {
@@ -202,16 +210,18 @@ function calculateSeconds() {
 }
 
 function displayTime() {
-        const seconds = 30 - calculateSeconds()
+        const seconds = 45 - calculateSeconds()
         context.clearRect(280, 290, 330, 80)
         context.fillStyle = 'red'
-        context.font = '60px Arial'
+        context.font = '65px Iceland'
         context.fillText('00:' + seconds.toString().padStart(2, '0'), 380, 350, 500)
         
         if (seconds <= 0) {
             loseCondition()
         }
-    
+//     sound = setInterval(function() {
+//         bip.play()
+//     }, 1000)
 }
 
 function update() {
@@ -247,9 +257,11 @@ document.querySelector('.start-btn').addEventListener('click', function() {
                 wires[i].isHovering = false
                 
                 if(wires[i].id === 1) {
+                    wires[i].isCut = true
                     winCondition()
                 }
                 if(wires[i].id === 2) {
+                    wires[i].isCut = true
                     loseCondition()
                 }
                 if(wires[i].id === 0 && !wires[i].isCut) {

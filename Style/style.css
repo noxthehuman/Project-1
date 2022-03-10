@@ -1,16 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
+
+body {
+    background-color: black;
+    background-image: url('/Images/explosion.gif');
+    background-size: 900px;
+    background-repeat: repeat;
+}
+
 .align-elements {
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-family:'Iceland';
+    font-size: 2.5rem;
+    color: darkorange;
+    margin: 0;
+    padding: 0;
+}
+
+.align-elements p, h1 {
+    width: 50%;
 }
 
 canvas {
-    /*background-color: rgb(206, 191, 191);*/
-    border: 3px solid grey;
+    background-image: url('/Images/concrete.jpg');
 }
 
 .start-btn {
-    width: 100px;
-    height: 50px;
+    width: 250px;
+    height: 100px;
+    background-color: orangered;
+    font-family: 'Iceland';
+    font-size: 3rem;
+    color: black;
+    justify-items: center;
+    align-items: center;
 }
 
