@@ -83,12 +83,19 @@ class Wires {
 }
 
 const wires = [
-    new Wires(295, 150, 400, 150, 120, Math.PI, Math.PI*2, 25, 'black', 0),
-    new Wires(100, 150, 240, 150, 130, Math.PI, Math.PI*2, 18, 'orange', 0),
-    new Wires(600, 300, 600, 400, 100, (Math.PI*3)/2, Math.PI/2, 10, 'green', 0),
-    new Wires(600, 200, 600, 300, 100, (Math.PI*3)/2, Math.PI/2, 20, 'red', 0),
-    new Wires(500, 500, 400, 500, 120, Math.PI*2, Math.PI, 15, 'pink', 0),
-    new Wires(300, 500, 200, 500, 95, Math.PI*2, Math.PI, 20, 'purple', 0)
+    new Wires(395, 150, 400, 150, 120, Math.PI, Math.PI*2, 25, 'black', 0),
+    new Wires(200, 150, 340, 150, 130, Math.PI, Math.PI*2, 18, 'orange', 0),
+    new Wires(350, 150, 550, 150, 100, Math.PI, Math.PI*2, 18, 'blue', 0),
+    new Wires(700, 300, 700, 400, 100, (Math.PI*3)/2, Math.PI/2, 13, 'green', 0),
+    new Wires(700, 200, 700, 300, 100, (Math.PI*3)/2, Math.PI/2, 20, 'red', 0),
+    new Wires(700, 180, 700, 310, 150, (Math.PI*3)/2, Math.PI/2, 15, 'brown', 0),
+    new Wires(500, 500, 500, 500, 120, Math.PI*2, Math.PI, 15, 'pink', 0),
+    new Wires(700, 500, 600, 500, 90, Math.PI*2, Math.PI, 20, 'red', 0),
+    new Wires(680, 500, 330, 500, 150, Math.PI*2, Math.PI, 15, 'orange', 0),
+    new Wires(400, 500, 300, 500, 95, Math.PI*2, Math.PI, 20, 'purple', 0),
+    new Wires(200, 450, 200, 270, 120, Math.PI/2, (Math.PI*3)/2, 17, 'blue', 0),
+    new Wires(200, 500, 200, 350, 80, Math.PI/2, (Math.PI*3)/2, 12, 'green', 0),
+    new Wires(200, 510, 200, 350, 130, Math.PI/2, (Math.PI*3)/2, 14, 'black', 0)
 ]
 
 function setId() {
@@ -132,35 +139,35 @@ function drawWires() {
 
 function drawBomb() {
     context.fillStyle = 'grey'
-    context.fillRect(70, 140, 550, 380)
+    context.fillRect(170, 130, 550, 380)
 
     context.fillStyle = 'black'
-    context.fillRect(170, 280, 350, 100)
+    context.fillRect(270, 280, 350, 100)
     context.fillStyle = 'white'
-    context.fillRect(180, 290, 330, 80)
+    context.fillRect(280, 290, 230, 80)
 
     //Rivets
     //top left
     context.beginPath()
-    context.arc(85, 160, 10, 0, Math.PI*2)
+    context.arc(185, 160, 10, 0, Math.PI*2)
     context.fillStyle = 'black'
     context.fill()
     context.closePath()
     //bottom left
     context.beginPath()
-    context.arc(85, 500, 10, 0, Math.PI*2)
+    context.arc(185, 500, 10, 0, Math.PI*2)
     context.fillStyle = 'black'
     context.fill()
     context.closePath()
     //top right
     context.beginPath()
-    context.arc(600, 160, 10, 0, Math.PI*2)
+    context.arc(700, 160, 10, 0, Math.PI*2)
     context.fillStyle = 'black'
     context.fill()
     context.closePath()
     // bottom right
     context.beginPath()
-    context.arc(600, 500, 10, 0, Math.PI*2)
+    context.arc(700, 500, 10, 0, Math.PI*2)
     context.fillStyle = 'black'
     context.fill()
     context.closePath()
@@ -181,7 +188,7 @@ function loseCondition() {
 }
 
 function penaltyTime() {
-    penalty += 2
+    penalty += 1
 }
 
 function startTimer() {
@@ -196,10 +203,10 @@ function calculateSeconds() {
 
 function displayTime() {
         const seconds = 30 - calculateSeconds()
-        context.clearRect(180, 290, 330, 80)
+        context.clearRect(280, 290, 330, 80)
         context.fillStyle = 'red'
         context.font = '60px Arial'
-        context.fillText('00:' + seconds.toString().padStart(2, '0'), 280, 350, 500)
+        context.fillText('00:' + seconds.toString().padStart(2, '0'), 380, 350, 500)
         
         if (seconds <= 0) {
             loseCondition()
