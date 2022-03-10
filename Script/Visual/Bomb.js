@@ -1,5 +1,6 @@
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
+const retry = document.querySelector('.start-btn')
 
 const img = new Image()
 img.src='./Images/wire-cutter.png'
@@ -78,6 +79,7 @@ class Wires {
         }
 
     }
+
 }
 
 const wires = [
@@ -89,14 +91,15 @@ const wires = [
     new Wires(300, 500, 200, 500, 95, Math.PI*2, Math.PI, 20, 'purple', 0)
 ]
 
-function assignId() {
-    for (i=1; i < 3; i++) {
-        let randomIndex = Math.floor(Math.random() * wires.length)   
-        
-        if(wires[randomIndex].id !== i) {
-            wires[randomIndex].id = i
-        }
+function setId() {
+    let id1= Math.floor(Math.random() * wires.length)
+    let id2 = Math.floor(Math.random() * wires.length)  
+    if(id1 === id2) {
+        id1 += 1
     }
+    wires[id1].id = 1 
+    wires[id2].id = 2
+    console.log(wires[id1].color, wires[id2].color)
 }
 
 function isMouseOverWire() {
@@ -113,7 +116,6 @@ function isMouseOverWire() {
 }
 
 function drawWires() {
-    assignId()
     isMouseOverWire()
     for (i=0; i < wires.length; i++) {
         if(wires[i].isCut) {
@@ -127,7 +129,6 @@ function drawWires() {
         }
     }
 }
-
 
 function drawBomb() {
     context.fillStyle = 'grey'
@@ -183,7 +184,7 @@ function penaltyTime() {
     penalty += 2
 }
 
-function StartTimer() {
+function startTimer() {
     start = new Date()
 }
 
@@ -215,23 +216,37 @@ function update() {
     updateId = requestAnimationFrame(update)
 }
 
-document.querySelector('.start-btn').addEventListener('click', function() {
-    StartTimer()
+function startGame() {
+    for(i=0; i < wires.length; i++) {
+        wires[i].isCut = false
+        wires[i].id = 0
+    }
+    penalty = 0
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    startTimer()
+    setId()
     update()
+}
+
+document.querySelector('.start-btn').addEventListener('click', function() {
+    startTimer()
+    update()
+    retry.textContent = 'Retry'
     
     canvas.addEventListener('click', function() {
         for (i=0; i < wires.length; i++) {
             if(wires[i].isMouseInWire(mouseX, mouseY)) 
             {
-                wires[i].isCut = true
                 wires[i].isHovering = false
+                
                 if(wires[i].id === 1) {
                     winCondition()
                 }
                 if(wires[i].id === 2) {
                     loseCondition()
                 }
-                if(wires[i].id === 0) {
+                if(wires[i].id === 0 && !wires[i].isCut) {
+                    wires[i].isCut = true
                     penaltyTime()
                 }
             } 
@@ -240,4 +255,11 @@ document.querySelector('.start-btn').addEventListener('click', function() {
             }
         }
     })
+})
+
+document.querySelector('.start-btn').addEventListener('click', function() {
+    if(retry.textContent === 'Retry') {
+        startGame()
+    }
+    
 })
